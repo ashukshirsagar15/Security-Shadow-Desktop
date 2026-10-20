@@ -1,0 +1,56 @@
+﻿# Git metadata
+.git/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+**/.env
+**/.env.*
+!**/.env.example
+**/.upload_token
+**/.read_token
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+
+# Python environments and generated files
+.venv/
+venv/
+**/.venv/
+**/venv/
+.build-venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local logs, captures, credentials, and editor files
+*.log
+*.bak
+*.bak.*
+*.orig
+changes_review.txt
+*.sqlite3
+*.db
+.idea/
+.vscode/
+
+# Local monitoring data and exports
+local_data/
+snapshots/
+exports/
+
+# Local bootstrap marker
+.security_shadow_setup_complete
+
+# Packaging outputs
+build/
+dist/
+release-output/
+*.spec
+Security-Shadow-Standalone-Windows-x64.zip
+Security-Shadow-Standalone-Windows-x64.zip.sha256

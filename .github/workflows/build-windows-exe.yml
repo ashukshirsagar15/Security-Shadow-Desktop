@@ -1,0 +1,68 @@
+name: Build standalone Windows desktop app
+
+on:
+  push:
+    branches:
+      - feature/standalone-windows-exe
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows-x64:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install runtime dependencies and packager
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install pyinstaller
+
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Build one-file, windowed executable
+        run: >-
+          python -m PyInstaller --noconfirm --clean --onefile --windowed
+          --name SecurityShadow
+          --collect-submodules flask
+          --collect-submodules werkzeug
+          --collect-submodules psutil
+          --hidden-import agent.agent
+          --hidden-import private_backend.app
+          --hidden-import setup_local
+          --hidden-import risk_engine
+          --hidden-import local_config
+          --version-file version_info.txt
+          desktop_app.py
+
+      - name: Prepare shareable package
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "dist/SecurityShadow.exe")) {
+            throw "PyInstaller did not produce dist/SecurityShadow.exe"
+          }
+          Copy-Item "DESKTOP_BUILD_README.txt" "dist/README.txt"
+          Copy-Item "LICENSE" "dist/LICENSE.txt"
+          Get-FileHash "dist/SecurityShadow.exe" -Algorithm SHA256 | Format-List | Out-File "dist/SHA256.txt"
+          Compress-Archive -Path "dist/SecurityShadow.exe", "dist/README.txt", "dist/LICENSE.txt", "dist/SHA256.txt" -DestinationPath "Security-Shadow-Standalone-Windows-x64.zip" -Force
+          Get-FileHash "Security-Shadow-Standalone-Windows-x64.zip" -Algorithm SHA256 | Format-List
+
+      - name: Upload executable package
+        uses: actions/upload-artifact@v4
+        with:
+          name: Security-Shadow-Standalone-Windows-x64
+          path: Security-Shadow-Standalone-Windows-x64.zip
+          if-no-files-found: error
+          retention-days: 14

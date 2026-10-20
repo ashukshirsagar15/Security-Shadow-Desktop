@@ -1,0 +1,18 @@
+SECURITY SHADOW — BRANDING
+
+Visible application attribution:
+  Developed by Ayush S. Kshirsagar
+
+Embedded Windows file properties:
+  Company Name: Ayush S. Kshirsagar
+  Product Name: Security Shadow
+  File Description: Security Shadow - Local Security Monitor
+  Original Filename: SecurityShadow.exe
+  File Version: 1.0.0.0
+  Copyright: Copyright (C) 2026 Ayush S. Kshirsagar
+
+Important: embedded file properties are editable metadata, not proof of
+publisher identity. This build is still unsigned. Windows may continue to
+show SmartScreen warnings or “Unknown Publisher”. Do not disable Defender
+or bypass a malware detection. A verified publisher identity requires a
+trusted code-signing certificate and a signed release process.
